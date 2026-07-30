@@ -1,9 +1,6 @@
 {
-  "installCommand": "corepack use pnpm@9.12.3 && pnpm --prefix chat install",
+  "installCommand": "corepack use pnpm@9.12.3 && node --version && pnpm --version && pnpm --prefix chat install",
   "buildCommand": "pnpm --prefix chat build",
   "outputDirectory": "chat/.next",
-  "framework": "nextjs",
-  "env": {
-    "ENABLE_EXPERIMENTAL_COREPACK": "1"
-  }
+  "framework": "nextjs"
 }
