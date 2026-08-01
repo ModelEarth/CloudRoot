@@ -1,3 +1,9 @@
 [submodule "chat"]
 	path = chat
 	url = https://github.com/modelearth/chat
+[submodule "feed"]
+	path = feed
+	url = https://github.com/modelearth/feed
+[submodule "localsite"]
+	path = localsite
+	url = https://github.com/modelearth/localsite
