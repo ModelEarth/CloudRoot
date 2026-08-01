@@ -10,6 +10,10 @@ The chat submodule now deploys successfully on Vercel: https://vercel-root-git-m
 
 ## Root cause
 
+> The fix below evolved from an initial duplicate-package.json-only workaround
+> into also setting Vercel's Root Directory (see Setup below). The diagnosis
+> itself is still accurate.
+
 The repo root had no `package.json`. Vercel's build checks the repo root's
 `package.json` (not the one inside `chat/`) to decide whether to activate
 Corepack (which controls which pnpm version actually runs) and to detect the
@@ -25,27 +29,32 @@ Next.js framework version. Without it, two things silently broke:
 3. Framework detection also failed separately, since it couldn't find `next`
    listed as a dependency at the repo root either.
 
-## Fix
+## Setup
 
-1. Add a `package.json` at the repo root with:
+This repo uses Vercel's "Root Directory" project setting, pointed at `chat/`,
+so Vercel treats `chat/` as the working root for install, build, and output -
+no `--prefix chat` paths or `outputDirectory` override needed in
+`vercel.json`.
 
-   ```json
-   { "packageManager": "pnpm@9.12.3" }
-   ```
+However, Vercel still reads the true repo root's `package.json` (outside
+`chat/`) early in the build, before Root Directory is applied, specifically
+to decide whether to activate Corepack and to detect the Next.js framework
+version. So a minimal root `package.json` is still required, containing:
 
-   This lets Corepack activate and correctly pin the pnpm version.
+- a `"packageManager"` field matching `chat/package.json`'s pnpm version
+- a `"next"` dependency matching `chat/package.json`'s Next.js version (not
+  actually installed/used - only read for framework detection)
 
-2. Also add `next` as a dependency in that same root `package.json` (matching
-   the version in `chat/package.json`), so Vercel's framework detection can
-   find it:
+## Scripts
 
-   ```json
-   { "dependencies": { "next": "^16.2.4" }, "packageManager": "pnpm@9.12.3" }
-   ```
-
-   Note this is a lightweight workaround - the root `package.json`'s `next`
-   entry isn't actually installed or used (`chat/`'s own install handles the
-   real dependency), it's only there to satisfy Vercel's static detection scan.
+- `set-root-directory.js` - Sets this project's Root Directory to `"chat"`
+  via Vercel's REST API. Requires `VERCEL_API_TOKEN` in `.env.local` (not
+  committed). Run: `node set-root-directory.js`
+- `check-package-sync.js` - Runs automatically as part of `installCommand`
+  before every deploy. Compares the root and `chat/package.json`'s
+  `packageManager` and `next` values, and fails the build loudly if they've
+  drifted out of sync, rather than silently breaking. Ignores pnpm's
+  integrity hash suffix when comparing versions.
 
 ## Note
 
