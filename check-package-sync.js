@@ -26,14 +26,18 @@ function fail(message) {
 const root = readJson('package.json');
 const chat = readJson('chat/package.json');
 
-const rootPackageManager = root.packageManager;
-const chatPackageManager = chat.packageManager;
+function stripHash(packageManager) {
+  return packageManager && packageManager.split('+')[0];
+}
+
+const rootPackageManager = stripHash(root.packageManager);
+const chatPackageManager = stripHash(chat.packageManager);
 
 if (rootPackageManager !== chatPackageManager) {
   fail(
     `"packageManager" mismatch between package.json and chat/package.json.\n` +
-      `  root package.json:       ${rootPackageManager}\n` +
-      `  chat/package.json:       ${chatPackageManager}`
+      `  root package.json:       ${root.packageManager}\n` +
+      `  chat/package.json:       ${chat.packageManager}`
   );
 }
 
