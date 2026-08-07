@@ -11,6 +11,38 @@ Repos involved:
 
 ---
 
+# Additions for chat/package.json
+
+Merge these into the existing `chat/package.json` — don't replace the file,
+since it already has the full Next.js dependency tree Vercel relies on.
+
+## scripts (add alongside existing "dev"/"build"/"start")
+
+```json
+"cf:build": "opennextjs-cloudflare build",
+"cf:deploy": "opennextjs-cloudflare deploy",
+"cf:preview": "opennextjs-cloudflare preview"
+```
+
+## devDependencies (add alongside existing devDependencies)
+
+```json
+"@opennextjs/cloudflare": "^0.6.0",
+"wrangler": "^3.99.0"
+```
+
+Check https://www.npmjs.com/package/@opennextjs/cloudflare for the current
+version before pinning — this adapter moves quickly.
+
+## Note on the pnpm/Corepack fix already in this repo
+
+The root `package.json`'s `check-package-sync.js` compares `packageManager`
+and `next` versions between root and `chat/package.json`. Adding the two
+devDependencies above doesn't affect that check — it only watches
+`packageManager` and `next`, not `@opennextjs/cloudflare` or `wrangler`.
+
+---
+
 ## 0. Prerequisite check — confirm the Postgres driver blocker
 
 Before anything else, open `chat/lib/db` (or wherever the Drizzle client is

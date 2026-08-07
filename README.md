@@ -1,6 +1,6 @@
-# VercelRoot
+# CloudRoot
 
-A minimal webroot for testing "chat" as a submodule with Vercel.
+AWebroot for deployments to both CloudFlare and Vercel with "chat" submodule.
 
 A preliminary step toward splitting "auth" into its own submodule.
 
