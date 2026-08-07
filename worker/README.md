@@ -99,21 +99,21 @@ provider, wire up its LangChain chat class, and add the matching key as
 both a GitHub secret and a `wrangler secret put` line in the workflow.
 
 
-CloudRoot/
-├── .github/workflows/
-│   ├── deploy-worker.yml           ← commit as-is
-│   └── deploy-chat-worker.yml      ← commit as-is
-├── worker/
-│   ├── src/index.js
-│   ├── package.json
-│   ├── wrangler.toml
-│   ├── .dev.vars.example
-│   └── .gitignore                  ← already updated
-├── frontend-example.js
-├── README.md
-├── PLAN.md
-└── chat/ — edit submodule in modelearth/chat directly, then bump CloudRoot pointer
-    ├── open-next.config.ts         ← commit as-is
-    ├── wrangler.jsonc               ← commit as-is
-    ├── .gitignore                   ← merge chat-gitignore-additions.txt into this
-    └── package.json                 ← PLAN.md is merging package.json.additions.md into this
+CloudRoot/  
+├── .github/workflows/  
+│   ├── deploy-worker.yml           ← commit as-is  
+│   └── deploy-chat-worker.yml      ← commit as-is  
+├── worker/  
+│   ├── src/index.js  
+│   ├── package.json  
+│   ├── wrangler.toml  
+│   ├── .dev.vars.example  
+│   └── .gitignore                  ← already updated  
+├── frontend-example.js  
+├── README.md  
+├── PLAN.md  
+└── chat/ — edit submodule in modelearth/chat directly, then bump CloudRoot pointer  
+    ├── open-next.config.ts         ← commit as-is  
+    ├── wrangler.jsonc               ← commit as-is  
+    ├── .gitignore                   ← merge chat-gitignore-additions.txt into this  
+    └── package.json                 ← PLAN.md is merging package.json.additions.md into this  
