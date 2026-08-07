@@ -98,7 +98,7 @@ Edit `getModel()` in `worker/src/index.js` — add a new `case` for the
 provider, wire up its LangChain chat class, and add the matching key as
 both a GitHub secret and a `wrangler secret put` line in the workflow.
 
-
+```
 CloudRoot/  
 ├── .github/workflows/  
 │   ├── deploy-worker.yml           ← commit as-is  
@@ -117,3 +117,4 @@ CloudRoot/
     ├── wrangler.jsonc               ← commit as-is  
     ├── .gitignore                   ← merge chat-gitignore-additions.txt into this  
     └── package.json                 ← PLAN.md is merging package.json.additions.md into this  
+```
