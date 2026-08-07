@@ -6,7 +6,8 @@ A preliminary step toward splitting "auth" into its own submodule.
 
 ## Status: Working ✅
 
-The chat submodule now deploys successfully on Vercel: https://vercel-root-git-main-dream-studio2.vercel.app
+The chat submodule deploys successfully on Vercel:  
+https://vercel-root-git-main-dream-studio2.vercel.app
 
 ## Root cause
 
