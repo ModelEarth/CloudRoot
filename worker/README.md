@@ -1,4 +1,6 @@
-# LLM Proxy Worker (LangChain + Cloudflare + GitHub Secrets)
+# LLM Proxy Worker
+
+## Cloudflare + LangChain + GitHub Secrets
 
 A Cloudflare Worker that holds your LLM API keys server-side and exposes a
 single `/api/chat` endpoint. Your frontend JS calls the Worker — it never
