@@ -1,0 +1,18 @@
+{
+  "name": "llm-proxy-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@langchain/anthropic": "^0.3.0",
+    "@langchain/core": "^0.3.0",
+    "@langchain/openai": "^0.3.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.78.0"
+  }
+}
