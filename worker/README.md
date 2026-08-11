@@ -50,6 +50,45 @@ use **Environments** (Settings → Environments → New environment → add the
 secrets there instead of at repo level) and require reviewers to approve
 deployments that use them.
 
+## 3a. Or: sync secrets from `docker/.env` with `sync-secrets.sh`
+
+If you already keep these values in a shared `docker/.env` file (the local
+dev env file used across ModelEarth's repos), you don't have to copy them
+into the GitHub UI by hand. Run the script instead of asking an AI agent
+to type out the `gh` commands each time — a fixed script can't
+misread the instructions, forget a flag, or accidentally echo a secret,
+which a freshly-prompted agent could.
+
+```bash
+cd worker
+./sync-secrets.sh                              # defaults: ../docker/.env, ModelEarth/CloudRoot
+./sync-secrets.sh path/to/.env owner/repo       # or override either
+```
+
+It requires the [GitHub CLI](https://cli.github.com/) (`gh`) installed and
+authenticated (`gh auth status`). For each of the four secrets above, it
+reads the value from `docker/.env`, pushes it with `gh secret set` (never
+printing the value to the terminal or logs), skips any key that's missing
+from the file instead of guessing, and finishes with `gh secret list` so
+you can confirm all four landed.
+
+If you'd rather have an AI coding assistant do this interactively (e.g. to
+adapt it to a differently-shaped `.env`), point it at this script and ask
+it to run it or explain what it does — that's safer than asking it to
+improvise the `gh` commands from scratch.
+
+**Heads up:** as of this writing, the team's `docker/.env` template has a
+`CLAUDE_API_KEY` placeholder (marked "currently using Claude Code CLI
+instead") but no `ANTHROPIC_API_KEY` entry — and this worker's deploy
+workflow (`deploy-worker.yml`) specifically expects a secret named
+`ANTHROPIC_API_KEY`. Add that key to `docker/.env` first, or the prompt
+above will correctly report it missing rather than silently setting the
+wrong thing.
+
+This only touches the four secrets this worker needs — `docker/.env` holds
+many more keys for other services (the Rust API, Arts Engine, Sanity,
+Better Auth, Supabase, etc.) that this prompt intentionally leaves alone.
+
 ## 4. Deploy
 
 Push to `main` with changes under `worker/`, or trigger manually from the
@@ -91,6 +130,7 @@ worker/src/index.js                   # Worker: LangChain LLM proxy
 worker/wrangler.toml                  # Worker config
 worker/package.json                   # Worker deps (@langchain/anthropic, @langchain/openai)
 worker/.dev.vars.example              # local dev secrets template
+worker/sync-secrets.sh                # syncs secrets from docker/.env into GitHub via gh CLI
 frontend-example.js                   # example fetch() call from frontend
 ```
 
