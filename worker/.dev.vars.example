@@ -1,5 +1,10 @@
 # Copy this file to .dev.vars for local `wrangler dev` testing.
 # .dev.vars is git-ignored — never commit real keys.
 
-ANTHROPIC_API_KEY=sk-ant-xxxxxxxx
-OPENAI_API_KEY=sk-xxxxxxxx
+# Agents
+GEMINI_API_KEY=your-gemini-key # aistudio.google.com
+ANTHROPIC_API_KEY=sk-ant-xxxxxxxx # Pay-as-you-go platform.claude.com → API Keys section.
+CLAUDE_CODE_OAUTH_TOKEN=your-subscription-token # Run: claude setup-token
+OPENAI_API_KEY=sk-xxxxxxxx # Get key at platform.openai.com
+XAI_API_KEY=your-xai-api-key # Get key at console.x.ai
+XAI_API_URL=https://api.x.ai/v1 # X.ai API base URL (default: https://api.x.ai/v1)
