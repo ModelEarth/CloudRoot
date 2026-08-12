@@ -13,6 +13,9 @@
 [submodule "know"]
 	path = know
 	url = https://github.com/ModelEarth/know
+[submodule "localcore"]
+	path = localcore
+	url = https://github.com/ModelEarth/localcore
 [submodule "localsite"]
 	path = localsite
 	url = https://github.com/modelearth/localsite
