@@ -1,9 +1,18 @@
+[submodule "auth"]
+	path = auth
+	url = https://github.com/ModelEarth/auth
 [submodule "chat"]
 	path = chat
 	url = https://github.com/modelearth/chat
 [submodule "feed"]
 	path = feed
 	url = https://github.com/modelearth/feed
+[submodule "keys"]
+	path = keys
+	url = https://github.com/ModelEarth/keys
+[submodule "know"]
+	path = know
+	url = https://github.com/ModelEarth/know
 [submodule "localsite"]
 	path = localsite
 	url = https://github.com/modelearth/localsite
