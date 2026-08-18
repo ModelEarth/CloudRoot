@@ -77,13 +77,11 @@ adapt it to a differently-shaped `.env`), point it at this script and ask
 it to run it or explain what it does — that's safer than asking it to
 improvise the `gh` commands from scratch.
 
-**Heads up:** as of this writing, the team's `docker/.env` template has a
-`CLAUDE_API_KEY` placeholder (marked "currently using Claude Code CLI
-instead") but no `ANTHROPIC_API_KEY` entry — and this worker's deploy
-workflow (`deploy-worker.yml`) specifically expects a secret named
-`ANTHROPIC_API_KEY`. Add that key to `docker/.env` first, or the prompt
-above will correctly report it missing rather than silently setting the
-wrong thing.
+`ANTHROPIC_API_KEY` is the standard key name across the team's repos —
+`docker/.env` should use that name (not the retired `CLAUDE_API_KEY`) for
+`sync-secrets.sh` to pick it up. See `worker/.dev.vars.example` for the
+current set of keys, including `CLAUDE_CODE_OAUTH_TOKEN` as a
+subscription-based alternative to `ANTHROPIC_API_KEY` for local dev.
 
 This only touches the four secrets this worker needs — `docker/.env` holds
 many more keys for other services (the Rust API, Arts Engine, Sanity,
