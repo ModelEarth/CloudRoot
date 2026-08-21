@@ -16,3 +16,6 @@
 [submodule "localsite"]
 	path = localsite
 	url = https://github.com/modelearth/localsite
+[submodule "requests"]
+	path = requests
+	url = https://github.com/modelearth/requests
