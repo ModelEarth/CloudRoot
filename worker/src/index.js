@@ -12,6 +12,12 @@
  *   model?: string,              // optional override, e.g. "claude-sonnet-4-6"
  *   messages: [{ role: "user" | "assistant", content: string }]
  * }
+ *
+ * Endpoint: GET /api/key-status
+ * Returns which of the provider keys this Worker manages are configured as
+ * Cloudflare secrets, e.g. ["anthropic","openai"] — never the key values
+ * themselves. Lets a frontend (e.g. the "keys" widget) show "server has a
+ * key configured" badges without reading a local docker/.env file.
  */
 
 import { ChatAnthropic } from "@langchain/anthropic";
@@ -29,9 +35,23 @@ function corsHeaders(origin) {
   const allowOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
   return {
     "Access-Control-Allow-Origin": allowOrigin,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
   };
+}
+
+// Provider id -> the env binding that holds its secret. Only providers this
+// Worker actually proxies (see getModel() below) belong here — the "keys"
+// widget supports many more provider ids than this Worker implements.
+const PROVIDER_ENV_VARS = {
+  anthropic: "ANTHROPIC_API_KEY",
+  openai: "OPENAI_API_KEY",
+};
+
+function getConfiguredProviders(env) {
+  return Object.entries(PROVIDER_ENV_VARS)
+    .filter(([, envVar]) => !!(env[envVar] && env[envVar].trim().length > 0))
+    .map(([providerId]) => providerId);
 }
 
 function toLangChainMessages(messages) {
@@ -64,6 +84,14 @@ export default {
 
     if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders(origin) });
+    }
+
+    const url = new URL(request.url);
+
+    if (url.pathname === "/api/key-status" && request.method === "GET") {
+      return new Response(JSON.stringify(getConfiguredProviders(env)), {
+        headers: { "Content-Type": "application/json", ...corsHeaders(origin) },
+      });
     }
 
     if (request.method !== "POST") {
