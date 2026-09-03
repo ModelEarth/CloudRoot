@@ -87,6 +87,57 @@ This only touches the four secrets this worker needs — `docker/.env` holds
 many more keys for other services (the Rust API, Arts Engine, Sanity,
 Better Auth, Supabase, etc.) that this prompt intentionally leaves alone.
 
+## 3b. Testing from a fork
+
+Verified end to end on 22 Aug 2026 against a fork and a personal Cloudflare
+account. Three things differ from the main-repo path above.
+
+**The fork's `main` must be current.** GitHub only shows workflows that exist
+on the fork's default branch. A fork created before the workflows were added
+shows an empty Actions tab and offers workflow templates instead. Push an
+up-to-date `main` to the fork first:
+
+```bash
+git pull upstream main
+git push origin main
+```
+
+**`sync-secrets.sh` needs bash.** It will not run in PowerShell without WSL
+installed. On Windows, set the two secrets directly instead:
+
+```powershell
+$token = (Select-String -Path path\to\docker\.env -Pattern '^CLOUDFLARE_API_TOKEN=' | Select-Object -First 1).Line -replace '^CLOUDFLARE_API_TOKEN=',''
+gh secret set CLOUDFLARE_API_TOKEN --repo <owner>/CloudRoot --body $token
+```
+
+Repeat for `CLOUDFLARE_ACCOUNT_ID`. Reading from the file rather than typing
+the value keeps it out of shell history.
+
+**The script's defaults do not resolve from CloudRoot.** `../docker/.env`
+assumes a `docker` directory beside `worker`, which CloudRoot does not have —
+`docker` lives in the `webroot` checkout. Pass both arguments explicitly.
+
+### Deploying without LLM keys
+
+The Cloudflare credentials alone are enough to deploy. `ANTHROPIC_API_KEY`
+and `OPENAI_API_KEY` can be left unset while verifying the pipeline; the
+workflow pushes empty strings, and the Worker returns
+`{"error":"ANTHROPIC_API_KEY not configured"}` on request rather than
+failing. Useful for confirming the GitHub Secrets to Cloudflare chain works
+before spending on API credit.
+
+Verify with:
+
+```bash
+curl -X POST https://llm-proxy-worker.<subdomain>.workers.dev/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"messages":[{"role":"user","content":"hello"}]}'
+```
+
+A `Method not allowed` response to a plain GET also confirms the Worker is
+live, since it only handles `POST /api/chat`.
+
+
 ## 4. Deploy
 
 Push to `main` with changes under `worker/`, or trigger manually from the
