@@ -2,7 +2,9 @@
 
 AWebroot for deployments to both CloudFlare and Vercel with "chat" submodule.
 
-A preliminary step toward splitting "auth" into its own submodule.
+A dual use webroot for Cloudflare, [Netlify](https://www.netlify.com/) and Vercel using [opennext.js](https://opennext.js.org) for NextJS.
+
+"auth" into its own submodule.
 
 ## Status: Working ✅
 
