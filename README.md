@@ -18,7 +18,8 @@ Site comes up at http://localhost:3700
 ## Status: Working ✅
 
 The chat submodule deploys successfully on Vercel:  
-https://vercel-root-git-main-dream-studio2.vercel.app
+[studio2.vercel.app](https://vercel-root-git-main-dream-studio2.vercel.app)  
+[modelearth.vercel.app](https://modelearth.vercel.app) - chat repo is webroot
 
 ## Root cause
 
