@@ -1,10 +1,19 @@
 # CloudRoot
 
-AWebroot for deployments to both CloudFlare and Vercel with "chat" submodule.
+A webroot for Cloudflare, [Netlify](https://www.netlify.com/) and Vercel using [opennext.js](https://opennext.js.org) for NextJS.
 
-A dual use webroot for Cloudflare, [Netlify](https://www.netlify.com/) and Vercel using [opennext.js](https://opennext.js.org) for NextJS.
+NodeJS resides in "chat" submodule.
 
-"auth" into its own submodule.
+First-time / from a fresh clone, run:
+
+    git submodule update --init --recursive   # pull in all submodule content
+    cd chat && pnpm install                   # install Node deps (needs pnpm)
+
+Launch site, each time (port can be changed):
+
+    PORT=3700 node chat/server.mjs
+
+Site comes up at http://localhost:3700
 
 ## Status: Working ✅
 
